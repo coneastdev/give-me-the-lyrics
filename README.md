@@ -16,11 +16,13 @@ This requires requests and beautifulsoup4 to be installed. You can do this via p
 
 [archlinux / python-requests](https://archlinux.org/packages/extra/any/python-requests/)
 
+if you are using the gui you will need to install via pip as custom tkinter is not in most repos
+
 ### pip install command
 
 Always remember to be careful before running a pip command
 
-```pip install beautifulsoup4 requests```
+```pip install beautifulsoup4 requests customtkinter```
 
 You can also use the activate.bash file on linux to automatically create a venv and install via pip
 
@@ -30,13 +32,11 @@ If you are on windows just double click the ```activate.bat``` file to automatic
 
 ## Tests
 
-This app uses the in built unit tests package, you can test the code by running the below code, you should get 17/17 if not create an issue (it takes me 32.6 seconds to run)
+This app uses the in built unit tests package, you can test the code by running the below code, you should get 23/23 if not create an issue (it takes me 36 seconds to run)
 
 ```python -m unittest tests/test_getLyrics.py```
 
-### UI
-THe GUI side of the app uses custom tkinter.
-```pip install customtkinter```
+```python -m unittest tests/test_appUI.py```
 
 ## LICENCE
 
@@ -44,7 +44,7 @@ This project is under the MIT licence however the I claim no ownership of the ly
 
 ## To Do
 
-- [ ] add GUI
+- [x] add GUI
 - [x] allow mutiple sources
 - [ ] setup mock http requests for local testing
 - [ ] more formats for output i.e. JSON and csv
