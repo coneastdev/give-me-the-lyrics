@@ -32,7 +32,7 @@ class TestAppUI(unittest.TestCase):
         self.root.userSearchButton.invoke()
 
         # Assert that the mocked function was called with the correct arguments
-        mock_getLyrics.assert_called_once_with("livin thing", "genius")
+        mock_getLyrics.assert_called_once_with("livin%20thing", "genius")
 
     def test_input_field(self):
         # Simulate entering text into an input field
