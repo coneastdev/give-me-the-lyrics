@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import requests
 from customtkinter import filedialog
 from app import getLyrics
 
@@ -16,7 +17,7 @@ def setOutput(self, text):
     self.saveButton.configure(state="normal")
 
 def callAppFunc(self):
-    query = self.userInputEntry.get().strip()
+    query = requests.utils.quote(self.userInputEntry.get().strip())
     self.userSearchButton.configure(state="disabled")
     try:
         source = {"Genius": "genius", "LyricAdvisor": "lyricadvisor"}.get(self.sourceVar.get(), "genius")
