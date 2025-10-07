@@ -2,38 +2,30 @@ import customtkinter as ctk
 from customtkinter import filedialog
 from app import getLyrics
 
-def checkEntry(*args):
-    if userInputEntry.get().strip():
-        userSearchButton.configure(state="normal")
+def checkEntry(self):
+    if self.userInputEntry.get().strip():
+        self.userSearchButton.configure(state="normal")
     else:
-        userSearchButton.configure(state="disabled")
+        self.userSearchButton.configure(state="disabled")
 
-def setOutput(text):
-    outputTextbox.configure(state="normal")
-    outputTextbox.delete("1.0", "end")
-    outputTextbox.insert("1.0", text)
-    outputTextbox.configure(state="disabled")
-    saveButton.configure(state="normal")
+def setOutput(self, text):
+    self.outputTextbox.configure(state="normal")
+    self.outputTextbox.delete("1.0", "end")
+    self.outputTextbox.insert("1.0", text)
+    self.outputTextbox.configure(state="disabled")
+    self.saveButton.configure(state="normal")
 
-def callAppFunc():
-    query = userInputEntry.get().strip()
-    if not query:
-        return
-    userSearchButton.configure(state="disabled")
-
+def callAppFunc(self):
+    query = self.userInputEntry.get().strip()
+    self.userSearchButton.configure(state="disabled")
     try:
-        sourceMap = {"Genius": "genius", "LyricAdvisor": "lyricadvisor"}
-
-        source = sourceMap.get(sourceVar.get(), "genius")
-        
+        source = {"Genius": "genius", "LyricAdvisor": "lyricadvisor"}.get(self.sourceVar.get(), "genius")
         lyrics = getLyrics(query, source)
-        setOutput(lyrics)
+        self.setOutput(lyrics)
     except Exception as error:
-        setOutput(str(error))
-    finally:
-        checkEntry()
+        self.setOutput(f"Error: {error}")
 
-def saveToFile():
+def saveToFile(self):
     filePath = filedialog.asksaveasfilename(
         title="Save Lyrics As...",
         defaultextension=".txt",
@@ -42,42 +34,49 @@ def saveToFile():
     if not filePath:
         return
 
-    text = outputTextbox.get("1.0", "end-1c")
+    text = self.outputTextbox.get("1.0", "end-1c")
     try:
         with open(filePath, "w", encoding="utf-8") as file:
             file.write(text)
     except Exception as error:
-        setOutput(f"Error saving file: {error}")
+        self.setOutput(f"Error saving file: {error}")
 
-app = ctk.CTk()
-app.geometry("600x500")
-app.title("Give Me The Lyrics")
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.geometry("600x500")
+        self.title("Give Me The Lyrics")
 
-ctk.set_appearance_mode("dark")
+        ctk.set_appearance_mode("dark")
 
-userInputLabel = ctk.CTkLabel(app, text="Enter song query:")
-userInputEntry = ctk.CTkEntry(app)
-userSearchButton = ctk.CTkButton(app, text="Search", state="disabled", command=callAppFunc)
+        self.userInputLabel = ctk.CTkLabel(self, text="Enter song query:")
+        self.userInputEntry = ctk.CTkEntry(self)
+        self.userSearchButton = ctk.CTkButton(self, text="Search", state="disabled", command=self.callAppFunc)
 
-sourceVar = ctk.StringVar(value="Genius")
-userSourceOptionMenu = ctk.CTkOptionMenu(app, variable=sourceVar, values=["Genius", "LyricAdvisor"])
+        self.sourceVar = ctk.StringVar(value="Genius")
+        self.userSourceOptionMenu = ctk.CTkOptionMenu(self, variable=self.sourceVar, values=["Genius", "LyricAdvisor"])
 
-outputTextbox = ctk.CTkTextbox(app, state="disabled", wrap="word")
-saveButton = ctk.CTkButton(app, text="Save Lyrics", state="disabled", command=saveToFile)
+        self.outputTextbox = ctk.CTkTextbox(self, state="disabled", wrap="word")
+        self.saveButton = ctk.CTkButton(self, text="Save Lyrics", state="disabled", command=self.saveToFile)
 
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_columnconfigure((0, 1, 2, 3), weight=1)
 
-app.grid_rowconfigure(2, weight=1)
-app.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        self.userInputEntry.bind("<KeyRelease>", lambda e: self.checkEntry())
 
-userInputEntry.bind("<KeyRelease>", checkEntry)
+        self.userInputLabel.grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        self.userInputEntry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
+        self.userSourceOptionMenu.grid(row=0, column=2, padx=6, pady=6, sticky="ew")
+        self.userSearchButton.grid(row=0, column=3, padx=5, pady=5)
 
-userInputLabel.grid(row=0, column=0, padx=5, pady=5, sticky="w")
-userInputEntry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
-userSourceOptionMenu.grid(row=0, column=2, padx=6, pady=6, sticky="ew")
-userSearchButton.grid(row=0, column=3, padx=5, pady=5)
+        self.saveButton.grid(row=1, column=0, columnspan=4, padx=5, pady=(0, 5), sticky="ew")
+        self.outputTextbox.grid(row=2, column=0, columnspan=4, padx=5, pady=5, sticky="nsew")
 
-saveButton.grid(row=1, column=0, columnspan=4, padx=5, pady=(0, 5), sticky="ew")
-outputTextbox.grid(row=2, column=0, columnspan=4, padx=5, pady=5, sticky="nsew")
+    checkEntry = checkEntry
+    setOutput = setOutput
+    callAppFunc = callAppFunc
+    saveToFile = saveToFile
 
 if __name__ == '__main__':
+    app = App()
     app.mainloop()
