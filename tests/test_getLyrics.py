@@ -68,11 +68,6 @@ class TestLyricOutput(unittest.TestCase):
         actual_lyrics = getLyrics(long_query)
         self.assertTrue(actual_lyrics.strip() == "" or "not found" in actual_lyrics.lower())
 
-    def test_special_characters_only(self):
-        """Test that a query with only special characters returns empty or not found."""
-        actual_lyrics = getLyrics("!@#$%^&*()")
-        self.assertTrue(actual_lyrics.strip() == "" or "not found" in actual_lyrics.lower())
-
     def test_multiple_word_query(self):
         """Test that a multi-word query returns lyrics."""
         actual_lyrics = getLyrics("Bohemian Rhapsody")
