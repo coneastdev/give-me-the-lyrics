@@ -8,8 +8,8 @@ python -m venv .venv
 REM Activate the virtual environment
 call venv\Scripts\activate.bat
 
-REM Install requests and beautifulsoup4 packages
-pip install requests beautifulsoup4
+REM Install requests, beautifulsoup4 and customtkinter packages
+pip install requests beautifulsoup4 customtkinter
 
 REM Deactivate the virtual environment
 deactivate

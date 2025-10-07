@@ -2,11 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 
 def getLyrics(prompt, source="genius"):
+    # encode the prompt for urls 
+    urlPrompt = requests.utils.quote(prompt)
     # create the url for get request and fire said request
     if source == "genius":
-        url =  f"https://searx.bndkt.io/search?q=%22site%3Agenius.com%22%20{prompt}%20lyrics&language=all&time_range=&safesearch=0&categories=general"
+        url =  f"https://searx.bndkt.io/search?q=%22site%3Agenius.com%22%20{urlPrompt}%20lyrics&language=all&time_range=&safesearch=0&categories=general"
     elif source == "lyricadvisor":
-        url =  f"https://searx.bndkt.io/search?q=%22site%3Astreetdirectory.com%22%20{prompt}&language=all&time_range=&safesearch=0&categories=general"
+        url =  f"https://searx.bndkt.io/search?q=%22site%3Astreetdirectory.com%22%20{urlPrompt}&language=all&time_range=&safesearch=0&categories=general"
     
     response = requests.get(url, {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
 
@@ -71,8 +73,8 @@ def main():
         print("\ninvalid source, defaulting to genius")
         source = "genius"
 
-    # get the search prompt and format it for the search engine
-    prompt = requests.utils.quote(input("\nenter song query $ "))
+    # get the search prompt
+    prompt = input("\nenter song query $ ")
 
     # get the lyrics from the prompt
     output = getLyrics(prompt, source)

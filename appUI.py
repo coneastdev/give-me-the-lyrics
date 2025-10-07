@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import requests
 from customtkinter import filedialog
 from app import getLyrics
 
