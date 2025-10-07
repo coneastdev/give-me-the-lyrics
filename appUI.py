@@ -17,7 +17,7 @@ def setOutput(self, text):
     self.saveButton.configure(state="normal")
 
 def callAppFunc(self):
-    query = requests.utils.quote(self.userInputEntry.get().strip())
+    query = self.userInputEntry.get().strip()
     self.userSearchButton.configure(state="disabled")
     try:
         source = {"Genius": "genius", "LyricAdvisor": "lyricadvisor"}.get(self.sourceVar.get(), "genius")
