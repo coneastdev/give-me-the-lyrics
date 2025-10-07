@@ -16,6 +16,8 @@ This requires requests and beautifulsoup4 to be installed. You can do this via p
 
 [archlinux / python-requests](https://archlinux.org/packages/extra/any/python-requests/)
 
+[archlinux / tk](https://archlinux.org/packages/extra/x86_64/tk/)
+
 if you are using the gui you will need to install via pip as custom tkinter is not in most repos
 
 ### pip install command
